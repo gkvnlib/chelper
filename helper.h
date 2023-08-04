@@ -83,11 +83,11 @@ public:
         return elements.empty();
     }
 
-    auto begin() {
+    auto begin() const {
         return elements.begin();
     }
 
-    auto end() {
+    auto end() const {
         return elements.end();
     }
 
@@ -146,6 +146,11 @@ public:
 
     std::vector<T> toVector() {
         return elements;
+    }
+
+    using ElementType = T;
+    ElementType getElementType() const {
+        return ElementType{};
     }
 };
 
@@ -218,19 +223,19 @@ List<T> fromArray(T (&arr)[N]) {
 template <typename T>
 List<T> merge(const List<T>& list1, const List<T>& list2) {
     List<T> mergedList = list1;
-    for (const auto& element : list2.toVector()) {
+    for (const auto& element : list2) {
         mergedList.add(element);
     }
     return mergedList;
 }
 
 template<typename T>
-bool hasIntersection(const List<T>& list1, const List<T>& list2) {
+bool hasIntersection(const List<int>& list1, const List<T>& list2) {
     if (typeid(T) != typeid(list1.getElementType()) || typeid(T) != typeid(list2.getElementType())) {
         throw std::runtime_error("Type mismatch!");
     }
 
-    for (const auto& element : list1.toArray()) {
+    for (const auto& element : list1) {
         if (list2.contains(element)) {
             return true;
         }
